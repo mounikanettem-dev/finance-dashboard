@@ -69,34 +69,16 @@ function Charts({ transactions }) {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
   <Pie
-    data={pieData}
-    dataKey="value"
-    nameKey="name"
-    outerRadius={70}
-    labelLine={false}
-    label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }) => {
-      const RADIAN = Math.PI / 180;
-      const radius = outerRadius + 10;
-      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-      const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-      return (
-        <text
-          x={x}
-          y={y}
-          fill="#333"
-          textAnchor={x > cx ? "start" : "end"}
-          dominantBaseline="central"
-          style={{ fontSize: "10px" }}
-        >
-          {name}
-        </text>
-      );
-    }}
-  >
-    {pieData.map((entry, index) => (
-      <Cell key={index} fill={COLORS[index % COLORS.length]} />
-    ))}
+  data={pieData}
+  dataKey="value"
+  nameKey="name"
+  outerRadius={60}
+  label={({ name }) => name}
+  labelLine
+>
+  {pieData.map((entry, index) => (
+    <Cell key={index} fill={COLORS[index % COLORS.length]} />
+  ))}
   </Pie>
   <Tooltip />
 </PieChart>
