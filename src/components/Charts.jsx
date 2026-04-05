@@ -9,30 +9,16 @@ import {
   Cell,
   ResponsiveContainer,
 } from "recharts";
-import { useState, useEffect } from "react";
 
-function Charts({ transactions, darkMode }) {
-
-  //  Detect Mobile Screen
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  //  Line Chart Data
+function Charts({ transactions }) {
+  // Line Chart Data
   const lineData = transactions.map((t) => ({
     date: t.date,
     income: t.type === "income" ? t.amount : 0,
     expense: t.type === "expense" ? t.amount : 0,
   }));
 
-  // Pie Chart Data
+  // Pie Chart Data (category wise expenses)
   const categoryData = {};
 
   transactions.forEach((t) => {
@@ -53,60 +39,68 @@ function Charts({ transactions, darkMode }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
+      
       {/* Line Chart */}
-      <div
-        className={`p-4 rounded-xl shadow ${
-          darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-        }`}
-      >
-        <h2 className="mb-2 font-semibold">Transaction Trend</h2>
+      <div className="bg-white p-4 rounded-xl shadow">
+        <h2 className="mb-2 font-semibold text-sm md:text-base">
+          Transaction Trend
+        </h2>
 
-        <div className="w-full h-56 md:h-64">
+        <div className="w-full h-[250px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={lineData}>
               <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
               <Line type="monotone" dataKey="income" stroke="#00C49F" />
-              <Line type="monotone" dataKey="expense" stroke="#ff8042" />
+              <Line type="monotone" dataKey="expense" stroke="#FF8042" />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* Pie Chart */}
-      <div
-        className={`p-4 rounded-xl shadow ${
-          darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-        }`}
-      >
-        <h2 className="mb-2 font-semibold">Spending Breakdown</h2>
+      <div className="bg-white p-4 rounded-xl shadow">
+        <h2 className="mb-2 font-semibold text-sm md:text-base">
+          Spending Breakdown
+        </h2>
 
-        <div className="w-full h-56 md:h-64">
+        <div className="w-full h-[250px]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <Pie
-                data={pieData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius="60%"
-                label={
-                  !isMobile
-                    ? ({ name, percent }) =>
-                        `${name} (${(percent * 100).toFixed(0)}%)`
-                    : false
-                }
-                labelLine={!isMobile}
-              >
-                {pieData.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
+  <Pie
+    data={pieData}
+    dataKey="value"
+    nameKey="name"
+    outerRadius={70}
+    labelLine={false}
+    label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }) => {
+      const RADIAN = Math.PI / 180;
+      const radius = outerRadius + 10;
+      const x = cx + radius * Math.cos(-midAngle * RADIAN);
+      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+      return (
+        <text
+          x={x}
+          y={y}
+          fill="#333"
+          textAnchor={x > cx ? "start" : "end"}
+          dominantBaseline="central"
+          style={{ fontSize: "10px" }}
+        >
+          {name}
+        </text>
+      );
+    }}
+  >
+    {pieData.map((entry, index) => (
+      <Cell key={index} fill={COLORS[index % COLORS.length]} />
+    ))}
+  </Pie>
+  <Tooltip />
+</PieChart>
               <Tooltip />
-            </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
