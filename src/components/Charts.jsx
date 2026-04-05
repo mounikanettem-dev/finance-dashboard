@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 
 function Charts({ transactions, darkMode }) {
 
-  // 📱 Detect Mobile Screen
+  //  Detect Mobile Screen
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -25,14 +25,14 @@ function Charts({ transactions, darkMode }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 📊 Line Chart Data
+  //  Line Chart Data
   const lineData = transactions.map((t) => ({
     date: t.date,
     income: t.type === "income" ? t.amount : 0,
     expense: t.type === "expense" ? t.amount : 0,
   }));
 
-  // 🥧 Pie Chart Data
+  // Pie Chart Data
   const categoryData = {};
 
   transactions.forEach((t) => {
@@ -54,7 +54,7 @@ function Charts({ transactions, darkMode }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
-      {/* 📈 Line Chart */}
+      {/* Line Chart */}
       <div
         className={`p-4 rounded-xl shadow ${
           darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
@@ -75,7 +75,7 @@ function Charts({ transactions, darkMode }) {
         </div>
       </div>
 
-      {/* 🥧 Pie Chart */}
+      {/* Pie Chart */}
       <div
         className={`p-4 rounded-xl shadow ${
           darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
