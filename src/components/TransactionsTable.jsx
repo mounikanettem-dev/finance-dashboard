@@ -53,7 +53,7 @@ function TransactionsTable({ transactions, role, darkMode, onDelete, onEdit }) {
         </select>
       </div>
 
-      {/* ✅ TABLE WRAPPER (FIX OVERFLOW) */}
+      {/* TABLE WRAPPER */}
       <div className="overflow-x-auto">
         <table className="w-full min-w-[650px] border">
           <thead>
