@@ -7,10 +7,9 @@ function Header({ role, setRole, darkMode, setDarkMode, openModal }) {
     >
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
 
-        {/* LEFT: Title */}
+        {/*Title */}
         <h1 className="text-xl font-bold">Finance Dashboard</h1>
 
-        {/* RIGHT SIDE */}
         <div className="flex flex-wrap items-center gap-3">
 
           {/* Dark Mode Toggle */}
